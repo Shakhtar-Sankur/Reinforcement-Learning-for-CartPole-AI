@@ -4,12 +4,12 @@ import numpy as np
 import torch
 from environment import CartPoleEnv
 from agent import DQNAgent
-from config import HYPERPARAMS
+from config import AGENT_PARAMS, TRAINING_PARAMS
 
 def record_video(model_path, video_path="videos/gameplay.mp4"):
     """Record a video of the trained agent playing CartPole."""
     env = CartPoleEnv()
-    agent = DQNAgent(state_dim=env.state_dim, action_dim=env.action_dim, **HYPERPARAMS)
+    agent = DQNAgent(state_dim=env.state_dim, action_dim=env.action_dim, **AGENT_PARAMS)
     agent.q_network.load_state_dict(torch.load(model_path))
     
     # Set up video writer

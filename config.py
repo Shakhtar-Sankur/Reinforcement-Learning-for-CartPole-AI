@@ -1,23 +1,39 @@
-import streamlit as st
-import base64
-import os
+"""Hyperparameters for the DQN agent and the training loop.
 
-def get_video_base64(video_path):
-    """Convert video file to base64 for embedding in Streamlit."""
-    with open(video_path, "rb") as video_file:
-        video_bytes = video_file.read()
-    return base64.b64encode(video_bytes).decode()
+This file previously held a byte-identical copy of the Streamlit demo in
+`app.py` and defined no hyperparameters at all, so `main.py`, `evaluate.py` and
+`visualize.py` each failed at import.
 
-st.title("CartPole DQN Demo")
-st.write("Reinforcement Learning agent trained to play CartPole.")
+The two dictionaries are separate on purpose. `AGENT_PARAMS` is splatted into
+`DQNAgent(...)`, which accepts exactly these keyword arguments; putting a
+training-loop setting such as `num_episodes` in there raises
+`TypeError: unexpected keyword argument`.
+"""
 
-# Display training plot
-st.image("plots/rewards.png", caption="Training Rewards vs. Episodes", use_column_width=True)
+#: Passed straight to DQNAgent.
+AGENT_PARAMS = {
+    "learning_rate": 1e-3,
+    "discount_factor": 0.99,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.01,
+    # Applied once per episode, not per gradient step. At ~200 steps an episode a
+    # per-step decay of 0.995 drives epsilon to its floor within about three
+    # episodes, and the agent stops exploring before it has seen anything.
+    "epsilon_decay": 0.995,
+}
 
-# Display gameplay video
-video_path = "videos/gameplay.mp4"
-if os.path.exists(video_path):
-    video_base64 = get_video_base64(video_path)
-    st.video(f"data:video/mp4;base64,{video_base64}")
-else:
-    st.write("Gameplay video not found. Run visualize.py to generate it.")
+#: Used by the training loop.
+TRAINING_PARAMS = {
+    "num_episodes": 500,
+    # CartPole-v1 is solved at an average of 475 over 100 consecutive episodes.
+    "solved_threshold": 475.0,
+    # Copying the online weights into the target network every 10 episodes keeps
+    # the bootstrap target fresh; every 100, as this used to be, means only a
+    # handful of updates across a whole run.
+    "target_update_freq": 10,
+    "log_every": 10,
+    "checkpoint_every": 100,
+}
+
+#: Everything in one mapping, for callers that want a single view.
+HYPERPARAMS = {**AGENT_PARAMS, **TRAINING_PARAMS}

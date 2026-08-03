@@ -1,22 +1,21 @@
-import gym
 import torch
 import numpy as np
 from agent import DQNAgent
 from environment import CartPoleEnv
 from utils import save_model, log_metrics
-from config import HYPERPARAMS
+from config import AGENT_PARAMS, TRAINING_PARAMS
 import os
 
 def train_dqn():
     """Train a DQN agent on the CartPole environment."""
     # Initialize environment and agent
     env = CartPoleEnv()
-    agent = DQNAgent(state_dim=env.state_dim, action_dim=env.action_dim, **HYPERPARAMS)
+    agent = DQNAgent(state_dim=env.state_dim, action_dim=env.action_dim, **AGENT_PARAMS)
     
     # Training parameters
-    num_episodes = HYPERPARAMS['num_episodes']
+    num_episodes = TRAINING_PARAMS['num_episodes']
     rewards = []
-    target_update_freq = 100  # Update target network every 100 episodes
+    target_update_freq = TRAINING_PARAMS['target_update_freq']
     
     try:
         # Training loop
@@ -43,6 +42,7 @@ def train_dqn():
                 total_reward += reward
             
             rewards.append(total_reward)
+            agent.decay_epsilon()
             
             # Update target network
             if episode % target_update_freq == 0:
