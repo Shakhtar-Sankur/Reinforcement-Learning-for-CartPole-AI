@@ -73,8 +73,15 @@ class DQNAgent:
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
-        
-        # Update epsilon
+
+    def decay_epsilon(self):
+        """Step the exploration rate down once per episode.
+
+        This used to happen inside update(), which runs on every environment
+        step. At roughly 200 steps an episode a 0.995 factor reaches the floor
+        after about three episodes, so the agent stopped exploring almost
+        immediately and learned from a nearly greedy policy.
+        """
         self.epsilon = max(self.epsilon_end, self.epsilon * self.epsilon_decay)
     
     def update_target_network(self):

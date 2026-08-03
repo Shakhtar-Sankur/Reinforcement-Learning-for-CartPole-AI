@@ -3,12 +3,12 @@ import torch
 import numpy as np
 from environment import CartPoleEnv
 from agent import DQNAgent
-from config import HYPERPARAMS
+from config import AGENT_PARAMS, TRAINING_PARAMS
 
 def evaluate(model_path, num_episodes=100):
     """Evaluate the trained agent and report average reward."""
     env = CartPoleEnv()
-    agent = DQNAgent(state_dim=env.state_dim, action_dim=env.action_dim, **HYPERPARAMS)
+    agent = DQNAgent(state_dim=env.state_dim, action_dim=env.action_dim, **AGENT_PARAMS)
     agent.q_network.load_state_dict(torch.load(model_path))
     agent.epsilon = 0.0  # Disable exploration
     

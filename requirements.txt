@@ -1,6 +1,6 @@
-gym==0.21.0
-torch==1.10.0
-numpy==1.21.0
-matplotlib==3.4.3
-opencv-python==4.5.3.56
-streamlit==1.0.0
+gymnasium>=1.0.0
+torch>=2.0.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+opencv-python>=4.8.0
+streamlit>=1.30.0
