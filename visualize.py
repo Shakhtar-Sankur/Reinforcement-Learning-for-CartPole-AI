@@ -1,6 +1,7 @@
 import gym
 import cv2
 import numpy as np
+import torch
 from environment import CartPoleEnv
 from agent import DQNAgent
 from config import HYPERPARAMS
