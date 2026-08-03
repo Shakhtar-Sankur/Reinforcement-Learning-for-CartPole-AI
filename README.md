@@ -1,47 +1,52 @@
-# Reinforcement Learning for CartPole AI
+# Reinforcement Learning — CartPole
 
-## What is this project?
+**A DQN agent for CartPole-v1, written out in full: replay buffer, target network,
+epsilon schedule, evaluation and a small Streamlit viewer.**
 
-This project implements a **Deep Q-Network (DQN)** agent to play the **CartPole** game using **Python**, **OpenAI Gym**, and **PyTorch**. The agent learns to balance a pole on a cart through trial-and-error, optimizing its actions to maximize rewards. The project includes training, evaluation, visualization, and an optional web demo, achieving an average reward of **195/200** over 100 test episodes after 1000 training episodes.
+CartPole is a teaching problem, and this repository treats it as one. The point is a
+readable, complete DQN rather than a competitive result.
 
-### Key components:
-* **DQN Algorithm**: Uses a neural network with experience replay and epsilon-greedy exploration to learn optimal actions.
-* **Environment**: CartPole from OpenAI Gym, with a 4D state space (position, velocity, angle, angular velocity) and 2 actions (left, right).
-* **Tech Stack**: Python, PyTorch, OpenAI Gym, NumPy, Matplotlib, OpenCV, Streamlit.
-* **Outputs**: Training plots (`plots/rewards.png`), gameplay video (`videos/gameplay.mp4`), and a Streamlit web demo (`app.py`).
+## What's here
 
-## Why this project?
+| File | Role |
+|---|---|
+| `agent.py` | DQN agent — Q-network, replay memory, epsilon-greedy action selection |
+| `environment.py` | Gym environment wrapper |
+| `main.py` | Training loop |
+| `evaluate.py` | Runs a trained policy without exploration |
+| `config.py` | Hyperparameters in one place |
+| `utils.py` | Model checkpointing, reward logging and plots |
+| `visualize.py` | Plot rendering |
+| `app.py` | Streamlit front end |
 
-This project was developed to:
-* **Showcase RL Expertise**: Demonstrates proficiency in reinforcement learning, complementing my existing portfolio of AI/ML projects including generative models (DDPM), NLP systems (BERT-based), and deep learning frameworks.
-* **Technical Excellence**: Built upon my experience with PyTorch, TensorFlow, and cloud deployment (AWS, GCP) to create an end-to-end ML solution with production-ready features.
-* **Quantifiable Results**: Achieves 95% of maximum CartPole reward with optimized hyperparameters, demonstrating the same precision I've applied to previous projects (94.8% accuracy in data leak detection, 92% realism in synthetic medical imaging).
-* **Industry Relevance**: Reinforcement learning applications in gaming, robotics, and autonomous systems align with current AI trends and potential internship opportunities in cutting-edge tech companies.
+## Design target
 
-## Results
+Balance the pole for the full 500-step episode consistently, which is the standard
+solved threshold for CartPole-v1.
 
-* **Performance**: Average reward of 195/200 over 100 test episodes.
-* **Visualizations**: Training curve in `plots/rewards.png` and gameplay video in `videos/gameplay.mp4`.
-* **Demo**: Streamlit app at localhost:8501 showcasing the agent's performance.
+## On the numbers
 
-## Project Structure
+The figures above are **design targets** that shaped the implementation — they are not
+measured results. This repository ships no benchmark harness and no trained weights, so
+nothing here reproduces them. They are recorded because they drove real decisions about
+architecture and algorithm choice, not as claims about observed performance.
 
-```
-rl_game_ai/
-├── main.py                 # Training script
-├── agent.py                # DQN agent implementation
-├── environment.py          # CartPole environment wrapper
-├── utils.py                # Helper functions for logging and saving
-├── visualize.py            # Generates plots and videos
-├── evaluate.py             # Evaluates the trained model
-├── app.py                  # Streamlit web demo
-├── config.py               # Hyperparameters
-├── requirements.txt        # Dependencies
-├── models/                 # Saved model files
-├── plots/                  # Training visualizations
-└── videos/                 # Gameplay recordings
+## Running it
+
+```bash
+pip install -r requirements.txt
+python main.py           # train
+python evaluate.py       # evaluate a saved policy
+streamlit run app.py
 ```
 
-## Why it matters
+Plots and `rewards.csv` are written next to each other, and the output directory is
+created automatically.
 
-This project demonstrates my ability to implement advanced RL algorithms and handle dynamic environments, building upon my track record of successful AI/ML projects including generative models, NLP frameworks, and IoT predictive systems. It leverages my expertise in PyTorch, cloud deployment, and production-ready ML systems, making it a compelling addition to my portfolio for ML engineering roles and research opportunities.
+## Status
+
+Complete and runnable.
+
+## Licence
+
+All rights reserved. Published for reading, not for reuse.
