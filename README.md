@@ -63,6 +63,25 @@ consecutive episodes; the default configuration runs 500.
 
 Complete and runnable.
 
+## Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+20 tests over the agent, the environment wrapper and the helpers. They check
+things with a right answer: a greedy agent picks the highest Q-value, epsilon
+decays once per episode and stops at its floor, the replay buffer forgets its
+oldest transitions at 10,000, a gradient step changes the online network and
+leaves the target network alone, and — the one that matters — 300 updates on a
+fixed batch whose every target is 1.0 bring the Q-values to within 0.25 of 1.0.
+The wrapper is checked for keeping `terminated` and `truncated` apart, since
+bootstrapping past a time limit is correct and past a fallen pole is not.
+
+Run on Python 3.10 and 3.12 by [GitHub Actions](.github/workflows/tests.yml),
+on CPU torch.
+
 ### Notes from a correctness pass
 
 Three defects fixed, the first of which stopped everything:
